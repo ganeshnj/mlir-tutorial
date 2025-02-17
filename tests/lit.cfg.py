@@ -6,7 +6,7 @@ from lit.formats import ShTest
 # oddly, the `config` variable is defined in the context of the lit runner that
 # runs this module.
 
-config.name = "mlir_tutorial"
+config.name = "_main"
 config.test_format = ShTest()
 config.suffixes = [".mlir"]
 
@@ -32,6 +32,7 @@ runfiles_dir = Path(os.environ["RUNFILES_DIR"])
 tool_relpaths = [
     "llvm-project/mlir",
     "llvm-project/llvm",
+    "_main/tools",
 ]
 
 config.environment["PATH"] = (
