@@ -3,11 +3,15 @@
 
 include "PolyDialect.td"
 include "PolyTypes.td"
+include "mlir/Interfaces/SideEffectInterfaces.td"
 
+// Type constraint for poly binop arguments: polys, vectors of polys, or
+// tensors of polys.
+def PolyOrContainer : TypeOrContainer<Polynomial, "poly-or-container">;
 
-class Poly_BinOp<string mnemonic> : Op<Poly_Dialect, mnemonic> {
-  let arguments = (ins Polynomial:$lhs, Polynomial:$rhs);
-  let results = (outs Polynomial:$output);
+class Poly_BinOp<string mnemonic> : Op<Poly_Dialect, mnemonic, [Pure, ElementwiseMappable, SameOperandsAndResultElementType]> {
+  let arguments = (ins PolyOrContainer:$lhs, PolyOrContainer:$rhs);
+  let results = (outs PolyOrContainer:$output);
   let assemblyFormat = "$lhs `,` $rhs attr-dict `:` `(` type($lhs) `,` type($rhs) `)` `->` type($output)";
 }
 
